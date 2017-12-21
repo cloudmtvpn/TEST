@@ -54,7 +54,7 @@ apt-get -y --purge remove openvpn*;
 # install openvpn
 #myip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0' | head -n1`;
 apt-get install openvpn -y
-wget -O /etc/openvpn/openvpn.tar $source/master/openvpn.tar
+wget -O /etc/openvpn/openvpn.tar $source/master/openvpn-debian.tar
 cd /etc/openvpn/
 tar xf openvpn.tar
 wget -O /etc/openvpn/1194.conf $source/master/tcp56.conf
