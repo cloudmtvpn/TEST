@@ -29,14 +29,14 @@ vps="aneka";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/syahz86/y"
+	source="https://raw.githubusercontent.com/yarzardhiyit/d8-x64"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP $source/debian7/IP.txt
+wget -q -O IP $source/master/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -63,30 +63,30 @@ cd
 #service webmin restart
 #source="https://raw.githubusercontent.com/elangoverdosis/deeniedoank"
 #cd
-#wget -O /usr/bin/benchmark $source/debian7/benchmark.sh
-#wget -O /usr/bin/speedtest $source/debian7/speedtest_cli.py
-#wget -O /usr/bin/ps-mem $source/debian7/ps_mem.py
-#wget -O /etc/issue.net $source/debian7/bannerA
-#wget -O /usr/bin/dropmon $source/debian7/dropmon.sh
-#wget -O /usr/bin/menu $source/debian7/menu.sh
-#wget -O /usr/bin/user-active-list $source/debian7/user-active-list.sh
-#wget -O /usr/bin/user-add $source/debian7/user-add.sh
-#wget -O /usr/bin/user-add-pptp $source/debian7/user-add-pptp.sh
-#wget -O /usr/bin/user-del $source/debian7/user-del.sh
-#wget -O /usr/bin/disable-user-expire $source/debian7/disable-user-expire.sh
-#wget -O /usr/bin/delete-user-expire $source/debian7/delete-user-expire.sh
-#wget -O /usr/bin/banned-user $source/debian7/banned-user.sh
+#wget -O /usr/bin/benchmark $source/master/benchmark.sh
+#wget -O /usr/bin/speedtest $source/master/speedtest_cli.py
+#wget -O /usr/bin/ps-mem $source/master/ps_mem.py
+#wget -O /etc/issue.net $source/master/bannerA
+#wget -O /usr/bin/dropmon $source/master/dropmon.sh
+#wget -O /usr/bin/menu $source/master/menu.sh
+#wget -O /usr/bin/user-active-list $source/master/user-active-list.sh
+#wget -O /usr/bin/user-add $source//user-add.sh
+#wget -O /usr/bin/user-add-pptp $source/master/user-add-pptp.sh
+#wget -O /usr/bin/user-del $source/master/user-del.sh
+#wget -O /usr/bin/disable-user-expire $source/master/disable-user-expire.sh
+#wget -O /usr/bin/delete-user-expire $source/master/delete-user-expire.sh
+#wget -O /usr/bin/banned-user $source/master/banned-user.sh
 #wget -O /usr/bin/unbanned-user https://raw.githubusercontent.com/elangoverdosis/deeniedoank/debian7/unbanned-user.sh
-#wget -O /usr/bin/user-expire-list $source/debian7/user-expire-list.sh
-#wget -O /usr/bin/user-gen $source/debian7/user-gen.sh
-#wget -O /usr/bin/user-limit $source/debian7/user-limit.sh
-#wget -O /usr/bin/user-list $source/debian7/user-list.sh
-#wget -O /usr/bin/user-login $source/debian7/user-login.sh
-#wget -O /usr/bin/user-pass $source/debian7/user-pass.sh
-#wget -O /usr/bin/user-renew $source/debian7/user-renew.sh
-#wget -O /usr/bin/clearcache.sh $source/debian7/clearcache.sh
-#wget -O /usr/bin/bannermenu $source/debian7/bannermenu
-wget -O /usr/bin/menu-update-script-vps.sh $source/debian7/menu-update-script-vps.sh
+#wget -O /usr/bin/user-expire-list $source/master/user-expire-list.sh
+#wget -O /usr/bin/user-gen $source/master/user-gen.sh
+#wget -O /usr/bin/user-limit $source/master/user-limit.sh
+#wget -O /usr/bin/user-list $source/master/user-list.sh
+#wget -O /usr/bin/user-login $source/master/user-login.sh
+#wget -O /usr/bin/user-pass $source/master/user-pass.sh
+#wget -O /usr/bin/user-renew $source/master/user-renew.sh
+#wget -O /usr/bin/clearcache.sh $source//clearcache.sh
+#wget -O /usr/bin/bannermenu $source/master/bannermenu
+wget -O /usr/bin/menu-update-script-vps.sh $source/master/menu-update-script-vps.sh
 
 
 #chmod +x /usr/bin/benchmark
