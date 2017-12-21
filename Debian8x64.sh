@@ -30,14 +30,14 @@ vps="aneka";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/syahz86/y"
+	source="https://raw.githubusercontent.com/yarzardhiyit/d8-x64"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP $source/debian7/IP.txt
+wget -q -O IP $source/master/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -47,7 +47,7 @@ if ! grep -w -q $MYIP IP; then
 	fi
 	rm /root/IP
 	rm -f /root/IP
-	exit
+	
 fi
 
 # disable ipv6
@@ -62,15 +62,15 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
 apt-get install gem
-# set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/KualaLumpur /etc/localtime
+# set time GMT +7
+ln -fs /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
 
 # set locale
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
 # set repo
-wget -O /etc/apt/sources.list $source/debian7/sources.list.debian7
+wget -O /etc/apt/sources.list $source/master/sources.list.debian7
 wget http://www.dotdeb.org/dotdeb.gpg
 wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
@@ -110,7 +110,7 @@ service vnstat restart
 
 # install screenfetch
 cd
-#wget $source/debian7/screenfetch-dev
+#wget $source/master/screenfetch-dev
 #mv screenfetch-dev /usr/bin/screenfetch
 #chmod +x /usr/bin/screenfetch
 #echo "clear" >> .profile
@@ -126,17 +126,17 @@ sudo gem install lolcat
 # text warna
 cd
 rm -rf /root/.bashrc
-wget -O /root/.bashrc $source/debian7/.bashrc
+wget -O /root/.bashrc $source/master/.bashrc
 
 # install webserver
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf $source/debian7/nginx.conf
+wget -O /etc/nginx/nginx.conf $source/master/nginx.conf
 mkdir -p /home/vps/public_html
 echo "<pre>Modified by SYAHZ86</pre>" > /home/vps/public_html/index.html
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
-wget -O /etc/nginx/conf.d/vps.conf $source/debian7/vps.conf
+wget -O /etc/nginx/conf.d/vps.conf $source/master/vps.conf
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
 service nginx restart
@@ -151,9 +151,9 @@ service nginx restart
 cd
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw $source/debian7/badvpn-udpgw
+wget -O /usr/bin/badvpn-udpgw $source/master/badvpn-udpgw
 if [[ $OS == "x86_64" ]]; then
-  wget -O /usr/bin/badvpn-udpgw $source/debian7/badvpn-udpgw64
+  wget -O /usr/bin/badvpn-udpgw $source/master/badvpn-udpgw64
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -162,8 +162,8 @@ cd
 
 # install mrtg
 #apt-get update;apt-get -y install snmpd;
-#wget -O /etc/snmp/snmpd.conf $source/debian7/snmpd.conf
-#wget -O /root/mrtg-mem.sh $source/debian7/mrtg-mem.sh
+#wget -O /etc/snmp/snmpd.conf $source/master/snmpd.conf
+#wget -O /root/mrtg-mem.sh $source/master/mrtg-mem.sh
 #chmod +x /root/mrtg-mem.sh
 #cd /etc/snmp/
 #sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
@@ -171,7 +171,7 @@ cd
 #snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
 #mkdir -p /home/vps/public_html/mrtg
 #cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
-#curl $source/debian7/mrtg.conf >> /etc/mrtg.cfg
+#curl $source/master/mrtg.conf >> /etc/mrtg.cfg
 #sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
 #sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
 #indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
@@ -210,7 +210,7 @@ sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbea
 service ssh restart
 service dropbear restart
 # bannerssh
-wget $source/debian7/bannerssh
+wget $source/master/bannerssh
 mv ./bannerssh /bannerssh
 chmod 0644 /bannerssh
 service dropbear restart
@@ -229,7 +229,7 @@ service ssh restart
 
 # install vnstat gui
 cd /home/vps/public_html/
-wget $source/debian7/vnstat_php_frontend-1.5.1.tar.gz
+wget $source/master/vnstat_php_frontend-1.5.1.tar.gz
 tar xvfz vnstat_php_frontend-1.5.1.tar.gz
 rm vnstat_php_frontend-1.5.1.tar.gz
 mv vnstat_php_frontend-1.5.1 vnstat
@@ -242,9 +242,9 @@ sed -i '/SixXS IPv6/d' config.php
 cd
 
 #if [[ $ether = "eth0" ]]; then
-#	wget -O /etc/iptables.conf $source/Debian7/iptables.up.rules.eth0
+#	wget -O /etc/iptables.conf $source/master/iptables.up.rules.eth0
 #else
-#	wget -O /etc/iptables.conf $source/Debian7/iptables.up.rules.venet0
+#	wget -O /etc/iptables.conf $source/master/iptables.up.rules.venet0
 #fi
 
 #sed -i $MYIP2 /etc/iptables.conf;
@@ -277,14 +277,14 @@ apt-get update;apt-get -y install fail2ban;service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
-wget -O /etc/squid3/squid.conf $source/debian7/squid3.conf
+wget -O /etc/squid3/squid.conf $source/master/squid3.conf
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
 # install webmin
 cd
 #wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.760_all.deb
-wget -O webmin-current.deb $source/debian7/webmin-current.deb
+wget -O webmin-current.deb $source/master/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
 #sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
@@ -294,36 +294,36 @@ service webmin restart
 service vnstat restart
 
 # install pptp vpn
-wget -O /root/pptp.sh $source/debian7/pptp.sh
+wget -O /root/pptp.sh $source/master/pptp.sh
 chmod +x pptp.sh
 ./pptp.sh
 
 # download script
 cd
-wget -O /usr/bin/benchmark $source/debian7/benchmark.sh
-wget -O /usr/bin/speedtest $source/debian7/speedtest_cli.py
-wget -O /usr/bin/ps-mem $source/debian7/ps_mem.py
-wget -O /usr/bin/dropmon $source/debian7/dropmon.sh
-wget -O /usr/bin/menu $source/debian7/menu.sh
-wget -O /usr/bin/user-active-list $source/debian7/user-active-list.sh
-wget -O /usr/bin/user-add $source/debian7/user-add.sh
-wget -O /usr/bin/user-add-pptp $source/debian7/user-add-pptp.sh
-wget -O /usr/bin/user-del $source/debian7/user-del.sh
-wget -O /usr/bin/disable-user-expire $source/debian7/disable-user-expire.sh
-wget -O /usr/bin/delete-user-expire $source/debian7/delete-user-expire.sh
-wget -O /usr/bin/banned-user $source/debian7/banned-user.sh
-wget -O /usr/bin/unbanned-user $source/debian7/unbanned-user.sh
-wget -O /usr/bin/user-expire-list $source/debian7/user-expire-list.sh
-wget -O /usr/bin/user-gen $source/debian7/user-gen.sh
-wget -O /usr/bin/userlimit.sh $source/debian7/userlimit.sh
-wget -O /usr/bin/userlimitssh.sh $source/debian7/userlimitssh.sh
-wget -O /usr/bin/user-list $source/debian7/user-list.sh
-wget -O /usr/bin/user-login $source/debian7/user-login.sh
-wget -O /usr/bin/user-pass $source/debian7/user-pass.sh
-wget -O /usr/bin/user-renew $source/debian7/user-renew.sh
-wget -O /usr/bin/clearcache.sh $source/debian7/clearcache.sh
-wget -O /usr/bin/bannermenu $source/debian7/bannermenu
-wget -O /usr/bin/menu-update-script-vps.sh $source/debian7/menu-update-script-vps.sh
+wget -O /usr/bin/benchmark $source/master/benchmark.sh
+wget -O /usr/bin/speedtest $source/master/speedtest_cli.py
+wget -O /usr/bin/ps-mem $source/master/ps_mem.py
+wget -O /usr/bin/dropmon $source/master/dropmon.sh
+wget -O /usr/bin/menu $source/master/menu.sh
+wget -O /usr/bin/user-active-list $source/master/user-active-list.sh
+wget -O /usr/bin/user-add $source/master/user-add.sh
+wget -O /usr/bin/user-add-pptp $source/master/user-add-pptp.sh
+wget -O /usr/bin/user-del $source/master/user-del.sh
+wget -O /usr/bin/disable-user-expire $source/master/disable-user-expire.sh
+wget -O /usr/bin/delete-user-expire $source/master/delete-user-expire.sh
+wget -O /usr/bin/banned-user $source/master/banned-user.sh
+wget -O /usr/bin/unbanned-user $source/master/unbanned-user.sh
+wget -O /usr/bin/user-expire-list $source/master/user-expire-list.sh
+wget -O /usr/bin/user-gen $source/master/user-gen.sh
+wget -O /usr/bin/userlimit.sh $source/master/userlimit.sh
+wget -O /usr/bin/userlimitssh.sh $source/master/userlimitssh.sh
+wget -O /usr/bin/user-list $source/master/user-list.sh
+wget -O /usr/bin/user-login $source/master/user-login.sh
+wget -O /usr/bin/user-pass $source/master/user-pass.sh
+wget -O /usr/bin/user-renew $source/master/user-renew.sh
+wget -O /usr/bin/clearcache.sh $source/master/clearcache.sh
+wget -O /usr/bin/bannermenu $source/master/bannermenu
+wget -O /usr/bin/menu-update-script-vps.sh $source/master/menu-update-script-vps.sh
 #cd
 
 #echo "*/30 * * * * root service dropbear restart" > /etc/cron.d/dropbear
@@ -366,7 +366,7 @@ mkswap /swapfile
 # jalan swapfile
 swapon /swapfile
 #auto star saat reboot
-wget $source/debian7/fstab
+wget $source/master/fstab
 mv ./fstab /etc/fstab
 chmod 644 /etc/fstab
 sysctl vm.swappiness=10
@@ -376,9 +376,9 @@ chmod 0600 /swapfile
 cd
 
 #ovpn
-wget -O ovpn.sh $source/debian7/installovpn1.sh
-chmod +x ovpn1.sh
-./ovpn1.sh
+wget -O installovpnd8.sh $source/master/installovpnd8.sh.sh
+chmod +x installovpnd8.sh
+./installovpnd8.sh
 rm ./ovpn1.sh
 
 usermod -s /bin/false test1
