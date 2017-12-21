@@ -131,7 +131,7 @@ do
 	    
 	echo "Dasar pelit!!! user ente marah2 jangan salahkan ane ya boss¡¡¡
 nanti jangan lupa di matikan boss
-biar user senang bs multilogin lagi.." | boxes -d boy | lolcat
+biar user senang bs multilogin lagi.." | boxes -d shell -p a1l2 | lolcat
 	break
 	;;
 	"(OFF) Auto Kill Multi Login")
@@ -148,14 +148,14 @@ biar user senang bs multilogin lagi.." | boxes -d boy | lolcat
 	    service dropbear restart
 	clear
 	echo "AUTO KILL LOGIN,SUDAH SAYA MATIKAN BOS 
-User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
+User Sudah Bisa Multi Login Lagi!!!" | boxes -d shell -p a1l2 | lolcat
 	break
 	;;
 	"Ganti Password VPS")
 	clear
 	read -p "Silahkan isi password baru untuk VPS anda: " pass	
         echo "root:$pass" | chpasswd
-	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"| boxes -d boy | lolcat
+	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"| boxes -d shell -p a1l2 | lolcat
 	break
 	;;
 	"Bersihkan Cache Ram Manual")
@@ -171,12 +171,12 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo ""
 	echo "Sesudah..." | lolcat
 	free -h
-	echo "SUKSES..!!!Cache ram anda sudah di bersihkan." | boxes -d boy | lolcat
+	echo "SUKSES..!!!Cache ram anda sudah di bersihkan." | boxes -d shell -p a1l2 | lolcat
         break
 	;;
 	"Daftar User Aktif")
 	clear
-	user-active-list | boxes -d dog | lolcat
+	user-active-list | boxes -d shell -p a1l2 | lolcat
 	break
 	;;
 	"Daftar User Kadaluarsa")
@@ -206,12 +206,12 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	;;
 	"Penggunaan Ram")
 	clear
-	ps-mem | boxes -d dog | lolcat
+	ps-mem | boxes -d shell -p a1l2 | lolcat
 	break
 	;;
 	"Speedtest")
 	clear
-	echo "SPEEDTEST SERVER" | boxes -d peek | lolcat
+	echo "SPEEDTEST SERVER" | boxes -d shell -p a1l2 | lolcat
 	echo "-----------------------------------------"
 	speedtest --share | lolcat
 	echo "-----------------------------------------"
@@ -219,7 +219,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	;;
 	"Benchmark")
 	clear
-	echo "BENCHMARK" | boxes -d peek | lolcat
+	echo "BENCHMARK" | boxes -d shell -p a1l2 | lolcat
 	benchmark | lolcat
 	break
 	;;
@@ -256,42 +256,42 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	"Restart Webmin")
 	clear
 	 service webmin restart
-	 echo "Webmin sudah di restart boss!!!" | boxes -d boy | lolcat
+	 echo "Webmin sudah di restart boss!!!" | boxes -d shell -p a1l2| lolcat
 	 break
 	 ;;
 	 "Restart Server VPS")
 	 clear
 	 reboot
-	 echo "sudah di restart tunggu sebentar ya boss!!!" | boxes -d boy | lolcat
+	 echo "sudah di restart tunggu sebentar ya boss!!!" | boxes -d shell -p a1l2 | lolcat
 	 break
 	 ;;
 	 "Restart Dropbear")
 	 clear
 	 service dropbear restart
-	 echo "Dropbear sudah di restart boss!!!" | boxes -d boy | lolcat
+	 echo "Dropbear sudah di restart boss!!!" | boxes -d shell -p a1l2 | lolcat
 	 break
 	 ;;
 	 "Restart OpenSSH")
 	 clear
 	 service ssh restart
-	 echo "OpenSSH sudah di restart boss!!!" | boxes -d boy | lolcat
+	 echo "OpenSSH sudah di restart boss!!!" | boxes -d shell -p a1l2 | lolcat
 	 break
 	 ;;
 	 "Restart OpenVPN")
 	 clear
 	 service openvpn restart
-	 echo "openvpn sudah di restart boss!!!" | boxes -d boy | lolcat
+	 echo "openvpn sudah di restart boss!!!" | boxes -d shell -p a1l2 | lolcat
 	 break
 	 ;;
 	 "Restart Squid3")
 	 clear
 	 service squid3 restart
-	 echo "Squid3 sudah di restart boss!!!" | boxes -d boy | lolcat
+	 echo "Squid3 sudah di restart boss!!!" | boxes -d shell -p a1l2 | lolcat
 	 break
 	 ;;
 	 "Ganti Port OpenSSH")
 	 clear
-            echo "Silahkan ganti port Openssh anda lalu klik enter."| boxes -d peek | lolcat
+            echo "Silahkan ganti port Openssh anda lalu klik enter."| boxes -d shell -p a1l2 | lolcat
             echo "Port default dan Port 2 tidak boleh sama !!!"| lolcat
 	    echo "Port default: 22"| lolcat
 	    read -p "Port 2: " -e -i 143 PORT
@@ -326,7 +326,7 @@ Port dropbear tidak boleh sama dengan port openVPN/openSSH/squid3 !!!"| boxes -d
 	 ;;
 	 "Ganti Port Squid3")
 	 clear
-	 echo "Silahkan ganti port Squid3 anda lalu klik enter"| boxes -d dog | lolcat
+	 echo "Silahkan ganti port Squid3 anda lalu klik enter"| boxes -d shell -p a1l2 | lolcat
 	    echo "Isi dengan angka tidak boleh huruf !!!"| lolcat
 	    echo -e "Port Squid3 1: 8080"
 	    read -p "Port Squid3 2: " -e -i 3128 PORT
@@ -343,7 +343,7 @@ Port dropbear tidak boleh sama dengan port openVPN/openSSH/squid3 !!!"| boxes -d
 	 ;;
 	 "Ganti Port OpenVPN")
 	 clear
-	           echo "Silahkan ganti port OpenVPN anda lalu klik enter?"| boxes -d peek | lolcat
+	           echo "Silahkan ganti port OpenVPN anda lalu klik enter?"| boxes -d shell -p a1l2 | lolcat
             read -p "Port: " -e -i 55 PORT
 	    service dropbear stop
 	    service ssh stop
