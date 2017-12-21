@@ -28,14 +28,14 @@ vps="aneka";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/syahz86/y"
+	source="https://raw.githubusercontent.com/yarzardhiyit/d8-x64"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP $source/debian7/IP.txt
+wget -q -O IP $source/master/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -52,14 +52,14 @@ fi
 
 # install openvpn
 apt-get install openvpn -y
-wget -O /etc/openvpn/openvpn.tar $source/debian7/openvpn.tar
+wget -O /etc/openvpn/openvpn.tar $source/master/openvpn.tar
 cd /etc/openvpn/
 tar xf openvpn.tar
-wget -O /etc/openvpn/1194.conf $source/debian7/tcp56.conf
+wget -O /etc/openvpn/1194.conf $source/master/tcp56.conf
 service openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-wget -O /etc/iptables.conf $source/debian7/iptables.conf
+wget -O /etc/iptables.conf $source/master/iptables.conf
 sed -i '$ i\iptables-restore < /etc/iptables.conf' /etc/rc.local
 
 myip2="s/ipserver/$MYIP/g";
@@ -70,7 +70,7 @@ service openvpn restart
 
 # configure openvpn client config
 cd /etc/openvpn/
-wget -O /etc/openvpn/client.ovpn $source/debian7/tcp56.ovpn
+wget -O /etc/openvpn/client.ovpn $source/master/tcp56.ovpn
 
 cp /etc/openvpn/client.ovpn /home/vps/public_html/client.ovpn
 sed -i $myip2 /home/vps/public_html/client.ovpn
