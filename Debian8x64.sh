@@ -312,15 +312,14 @@ service squid3 restart
 
 # install webmin
 cd
-#wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.760_all.deb
-wget -O webmin-current.deb $source/master/webmin-current.deb
-dpkg -i --force-all webmin-current.deb
+# install webmin
+cd
+wget -O webmin-current.deb "https://raw.githubusercontent.com/oi10536/SSH-OpenVPN/master/API/webmin-current.deb"
+dpkg -i --force-all webmin-current.deb;
 apt-get -y -f install;
-#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm -f /root/webmin-current.deb
-apt-get -y --force-yes -f install libxml-parser-perl
+rm /root/webmin-current.deb
 service webmin restart
-service vnstat restart
+
 
 # install pptp vpn
 wget -O /root/pptp.sh $source/master/pptp.sh
