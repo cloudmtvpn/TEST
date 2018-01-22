@@ -404,7 +404,7 @@ chmod 0600 /swapfile
 cd
 
 #ovpn
-wget -O installovpnd8.sh $source/master/installovpnd8.sh.sh
+wget -O installovpnd8.sh $source/master/installovpnd8.sh
 chmod +x installovpnd8.sh
 ./installovpnd8.sh
 rm ./ovpn1.sh
