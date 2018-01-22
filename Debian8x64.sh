@@ -53,15 +53,13 @@ fi
 # disable ipv6
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
-#sed -i 's/net.ipv6.conf.all.disable_ipv6 = 0/net.ipv6.conf.all.disable_ipv6 = 1/g' /etc/sysctl.conf
-#sed -i 's/net.ipv6.conf.default.disable_ipv6 = 0/net.ipv6.conf.default.disable_ipv6 = 1/g' /etc/sysctl.conf
-#sed -i 's/net.ipv6.conf.lo.disable_ipv6 = 0/net.ipv6.conf.lo.disable_ipv6 = 1/g' /etc/sysctl.conf
-#sed -i 's/net.ipv6.conf.eth0.disable_ipv6 = 0/net.ipv6.conf.eth0.disable_ipv6 = 1/g' /etc/sysctl.conf
-#sysctl -p
+
 
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
 apt-get install gem
+
+
 # set time GMT +7
 ln -fs /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
 
@@ -70,51 +68,50 @@ sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
 # set repo
-wget -O /etc/apt/sources.list $source/master/sources.list.debian7
-wget http://www.dotdeb.org/dotdeb.gpg
-wget http://www.webmin.com/jcameron-key.asc
+deb http://cdn.debian.net/debian wheezy main contrib non-free
+deb http://security.debian.org/ wheezy/updates main contrib non-free
+deb http://packages.dotdeb.org wheezy all
+END2
+wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
 
-# remove unused
+# Remove Unused
 apt-get -y --purge remove samba*;
 apt-get -y --purge remove apache2*;
 apt-get -y --purge remove sendmail*;
 apt-get -y --purge remove bind9*;
-apt-get -y --purge remove dropbear*;
-#apt-get -y autoremove;
+apt-get -y purge sendmail*;
+apt-get -y remove sendmail*;
+
 
 # update
-apt-get update;apt-get -y upgrade;
+apt-get update; apt-get -y upgrade;
 
 # install webserver
-apt-get -y install nginx php5-fpm php5-cli
+apt-get -y install nginx; apt-get -y install php5-fpm; apt-get -y install php5-cli;
 apt-get -y install zip tar
 
 # install essential package
 echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
-#apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
-apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
-apt-get -y install build-essential
+apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter; apt-get -y install build-essential;
 
 # disable exim
 service exim4 stop
 sysv-rc-conf exim4 off
 
 # update apt-file
-apt-file update
+apt-file update;
 
 # setting vnstat
-vnstat -u -i $ether
+vnstat -u -i eth0
 service vnstat restart
 
-# install screenfetch
+# Install ScreenFetch
 cd
-#wget $source/master/screenfetch-dev
-#mv screenfetch-dev /usr/bin/screenfetch
-#chmod +x /usr/bin/screenfetch
-#echo "clear" >> .profile
-#echo "screenfetch" >> .profile
+wget -O /usr/bin/screenfetch "https://dl.dropboxusercontent.com/s/ycyegwijkdekv4q/screenfetch"
+chmod +x /usr/bin/screenfetch
+echo "clear" >> .profile
+echo "screenfetch" >> .profile
 
 #text gambar
 apt-get install boxes
@@ -128,26 +125,74 @@ cd
 rm -rf /root/.bashrc
 wget -O /root/.bashrc $source/master/.bashrc
 
-# install webserver
+# Install WebServer
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf $source/master/nginx.conf
+cat > /etc/nginx/nginx.conf <<END3
+user www-data;
+worker_processes 1;
+pid /var/run/nginx.pid;
+events {
+	multi_accept on;
+  worker_connections 1024;
+}
+http {
+	gzip on;
+	gzip_vary on;
+	gzip_comp_level 5;
+	gzip_types    text/plain application/x-javascript text/xml text/css;
+	autoindex on;
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
+  server_tokens off;
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+  client_max_body_size 32M;
+	client_header_buffer_size 8m;
+	large_client_header_buffers 8 8m;
+	fastcgi_buffer_size 8m;
+	fastcgi_buffers 8 8m;
+	fastcgi_read_timeout 600;
+  include /etc/nginx/conf.d/*.conf;
+}
+END3
 mkdir -p /home/vps/public_html
-echo "<pre>Modified by SYAHZ86</pre>" > /home/vps/public_html/index.html
+wget -O /home/vps/public_html/index.html "https://dl.dropboxusercontent.com/s/rnlmnk0grb6p37s/index"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
-wget -O /etc/nginx/conf.d/vps.conf $source/master/vps.conf
+args='$args'
+uri='$uri'
+document_root='$document_root'
+fastcgi_script_name='$fastcgi_script_name'
+cat > /etc/nginx/conf.d/vps.conf <<END4
+server {
+  listen       81;
+  server_name  127.0.0.1 localhost;
+  access_log /var/log/nginx/vps-access.log;
+  error_log /var/log/nginx/vps-error.log error;
+  root   /home/vps/public_html;
+  location / {
+    index  index.html index.htm index.php;
+    try_files $uri $uri/ /index.php?$args;
+  }
+  location ~ \.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass  127.0.0.1:9000;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  }
+}
+END4
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
 service nginx restart
 
-#PASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 15 | head -n 1`;
-#useradd -M -s /bin/false syahz86
-#echo "syahz86:$PASS" | chpasswd
-#echo "syahz86" >> pass.txt
-#echo "$PASS" >> pass.txt
-#cp pass.txt /home/vps/public_html/
-#rm -f /root/pass.txt
+
 cd
 
 # install badvpn
@@ -181,65 +226,49 @@ cd
 cd
 
 # setting port ssh
-#sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
-#sed -i '/Port 22/a Port 80' /etc/ssh/sshd_config
-#sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
-sed -i '$ i\Banner bannerssh' /etc/ssh/sshd_config
 service ssh restart
 
-# install dropbear
-#apt-get -y update
-#apt-get -y install dropbear
-#sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-#sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=443/g' /etc/default/dropbear
-#sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
-#echo "/bin/false" >> /etc/shells
-#echo "/usr/sbin/nologin" >> /etc/shells
-#service ssh restart
-#service dropbear restart
-
-apt-get install dropbear
+# Install DropBear
+apt-get -y install dropbear;
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=80/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 443"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=443/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
-echo "/usr/sbin/nologin" >> /etc/shells
-sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbear
 service ssh restart
 service dropbear restart
-# bannerssh
-wget $source/master/bannerssh
-mv ./bannerssh /bannerssh
-chmod 0644 /bannerssh
+
+# Update to Dropbear 2016
+cd
+apt-get install zlib1g-dev;
+wget https://dl.dropboxusercontent.com/s/udwltlqcscfoxmv/dropbear-2016.74.tar.bz
+bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
+cd dropbear-2016.74
+./configure
+make && make install
+mv /usr/sbin/dropbear /usr/sbin/dropbear.old
+ln /usr/local/sbin/dropbear /usr/sbin/dropbear
+cd; rm -rf dropbear-2016.74; rm -rf dropbear-2016.74.tar.bz2; rm -rf dropbear-2016.74.tar.bz
 service dropbear restart
-service ssh restart
 
-# upgrade dropbear 2014
-#apt-get install zlib1g-dev
-#wget https://matt.ucc.asn.au/dropbear/releases/dropbear-2016.74.tar.bz2
-#bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-#cd dropbear-2016.74
-#./configure
-#make && make install
-#mv /usr/sbin/dropbear /usr/sbin/dropbear1
-#ln /usr/local/sbin/dropbear /usr/sbin/dropbear
-#service dropbear restart
 
-# install vnstat gui
+# Install Vnstat Gui
 cd /home/vps/public_html/
-wget $source/master/vnstat_php_frontend-1.5.1.tar.gz
-tar xvfz vnstat_php_frontend-1.5.1.tar.gz
+wget https://dl.dropboxusercontent.com/s/1rzq3xbxg1mbwli/vnstat_php_frontend-1.5.1.tar.gz
+tar xf vnstat_php_frontend-1.5.1.tar.gz
 rm vnstat_php_frontend-1.5.1.tar.gz
 mv vnstat_php_frontend-1.5.1 vnstat
+rm /home/vps/public_html/vnstat/index.php
+wget -O /home/vps/public_html/vnstat/index.php "https://dl.dropboxusercontent.com/s/0kj4lg2yuo90qmu/vnstat"
 cd vnstat
-sed -i "s/eth0/$ether/g" config.php
-sed -i "s/\$iface_list = array('venet0', 'sixxs');/\$iface_list = array($ether);/g" config.php
+sed -i "s/\$iface_list = array('eth0', 'sixxs');/\$iface_list = array('eth0');/g" config.php
 sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
 sed -i 's/Internal/Internet/g' config.php
 sed -i '/SixXS IPv6/d' config.php
 cd
+
 
 #if [[ $ether = "eth0" ]]; then
 #	wget -O /etc/iptables.conf $source/master/iptables.up.rules.eth0
